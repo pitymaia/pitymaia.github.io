@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html data-ng-app="app">
+	<head>
+		<meta charset="UTF-8">
+		<!-- Latest compiled and minified CSS -->
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
+		<style>
+			body {
+				background-color: lightyellow;
+				font-family: verdana;
+			}
+			h1 {
+				color: brown;
+			}
+			p {
+				color: green;
+			}
+			.angularcrumbtrail {
+				background-color: white;
+				padding: 0.5em !important;
+			}
+			.angularcrumbtrail a {
+				color: orange;
+				text-decoration: none;
+				font-size: 10pt;
+			}
+			.angularcrumbtrail a:hover {
+				color: red;
+				text-decoration: underline;
+			}
+			.angularcrumbtrail {
+				margin-left: 0;
+				padding-left: 0;
+			}
+			.angularcrumbtrail li {
+				display: inline-block;
+				margin-right: 0.5em;
+			}
+			.angularcrumbtrail .active {
+				color: black !important;
+				text-decoration: none !important;
+				cursor: default;
+			}
+		</style>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+		<script>
+			var app = angular.module('app', ['ngRoute', 'angularCrumbtrail']);
+			// Angular route links config
+			app.config(function ($routeProvider) {
+				$routeProvider.when('/home', {
+					templateUrl: 'home.html',
+					controller: 'homeCtrl',
+				}).when('/properties', {
+					templateUrl: 'properties.html',
+					controller: 'propertiesCtrl',
+				}).when('/properties/:param', {
+					templateUrl: 'property.html',
+					controller: 'propertyCtrl',
+				}).when('/properties/:param/room/:param2', {
+					templateUrl: 'room.html',
+					controller: 'roomCtrl',
+				}).otherwise({ redirectTo: '/home' });
+			});
+
+			// Main page controller
+			app.controller('example', function ($scope, $rootScope) {
+				$rootScope.angularCrumbTrailData = [];
+				$scope.properties = [
+					'Big house',
+					'Beach house',
+					'Mountain cabin',
+				];
+
+				$scope.rooms = [
+					'Master bed room',
+					'Kids bed room',
+					'Dining',
+					'Garden',
+					'Garage',
+				];
+			});
+			// Home page controller
+			app.controller('homeCtrl', function ($scope, $rootScope) {
+				$rootScope.angularCrumbTrailData = [{label:'Home', url:''}];
+			});
+			// Properties page controller
+			app.controller('propertiesCtrl', function ($scope, $rootScope) {
+				$rootScope.angularCrumbTrailData = [
+					{label:'Home', url:'#/home'}, {label:'Properties', url:''},
+				];
+			});
+			// Property page controller
+			app.controller('propertyCtrl', function ($scope, $rootScope) {
+				$scope.propertyNumber = location.hash.split('/')[2];
+				$rootScope.angularCrumbTrailData = [
+					{label:'Home', url:'#/home'}, {label:'Properties', url:'#/properties'}, {label: $scope.properties[$scope.propertyNumber], url:''}
+				];
+			});
+			// Room page controller
+			app.controller('roomCtrl', function ($scope, $rootScope) {
+				$scope.propertyNumber = location.hash.split('/')[2];
+				$scope.roomNumber = location.hash.split('/')[4];
+				$rootScope.angularCrumbTrailData = [
+					{label:'Home', url:'#/home'}, {label:'Properties', url:'#/properties'}, {label: $scope.properties[$scope.propertyNumber], url:'#/properties/' + $scope.propertyNumber}, {label: $scope.rooms[$scope.roomNumber], url: ''}
+				];
+			});
+		</script>
+
+		<title>Angular breadcrumb trail</title>
+	</head>
+	<body data-ng-controller="example">
+		<h1>Angular breadcrumb trail</h1>
+
+		<p>A nice Angular breadcrumb trail system for custom URLs.</p>
+		<angular-crumbtrail template="false" separator="|"></angular-crumbtrail>
+		<div data-ng-view></div>
+	</body>
+	<script src="angularcrumbtrail.js"></script>
+</html>
