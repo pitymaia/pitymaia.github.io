@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Properties</title>
+	</head>
+	<body>
+		<h3>Properties</h3>
+
+		<p>Here we have some properties, select one:</p>
+		<div data-ng-repeat="property in properties">
+			<a data-ng-href="#/properties/{{$index}}">{{property}}</a>
+			<br />
+		</div>
+	</body>
+</html>

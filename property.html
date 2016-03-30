@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Properties</title>
+	</head>
+	<body>
+		<h3>{{properties[propertyNumber]}}</h3>
+
+		<p>Here we have some rooms, select one:</p>
+		<div data-ng-repeat="room in rooms">
+			<a data-ng-href="#/properties/{{propertyNumber}}/room/{{$index}}">{{room}}</a>
+			<br />
+		</div>
+	</body>
+</html>
